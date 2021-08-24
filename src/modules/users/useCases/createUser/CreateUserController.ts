@@ -12,7 +12,7 @@ class CreateUserController {
 
       return response.status(201).json(user);
     } catch (error) {
-      return response.status(400).json({ error: "User is already" });
+      return response.status(400).json({ error: "E-mail is already in use" });
     }
   }
 }

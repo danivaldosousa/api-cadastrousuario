@@ -1,0 +1,194 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Atlas",
+        "description": "Essa é uma documentação sobre a Atlas API",
+        "version": "1.0.0",
+        "contact": {
+            "email": "danivaldoweb@gmail.com"
+        }
+    },
+    "servers": [
+        {
+            "url":  "http://localhost:3333",
+            "description": "API para Teste"
+        }
+    ],
+    "paths": {
+        "/users": {
+            "post": {
+                "summary": "Criar um novo usuário.",
+                "description": "Este recurso cria um novo usuário.",
+                "tags": ["Users"],
+                "requestBody": {
+                    "required": true, 
+                    "content":{
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                         
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                        
+                                    }
+                                },
+                                "example": {
+                                    "name": "Danivaldo",
+                                    "email": "danivaldo@gmail.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses" : {
+                    "201": {
+                        "description": "Usuario criado com sucesso",
+                        "content" :{
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/User"           
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "E-mail já está sendo utilizado"
+                    }
+                }
+            },
+            "get": {
+                "summary": "Retorna todos os usuários",
+                "description": "Recurso disponivel apenas para  usuário admin",
+                "tags": ["Users"],
+                "parameters" : [
+                  {  "name": "user_id",
+                     "type ":"string",
+                     "format": "uuid",
+                    "in": "header",
+                    "description": " ",
+                    "required": true
+                  }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação realizada com sucesso",
+                        "content":{
+                            "application/json": {
+                                "schema": {
+                                    "type": "array", 
+                                    "items": {                                 
+                                    "$ref": "#/components/schemas/User"
+                                    }  
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Usuário sem permissão ou Usuário não encontrado"
+                    }
+                }   
+            }
+        },
+        "/users/{user_id}" : {
+            "get":{
+                "summary" : "Retorna um usuário especifico",
+                "description": "Retona apenas um usuário",
+                "tags": ["Users"],
+                "parameters":[
+                        {
+                        "name": "user_id",
+                        "type": "string",
+                        "format": "uuid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação realizada com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado"
+                    }
+                }
+            }
+            
+        },
+        "/users/{user_id}/admin" : {
+            "patch":{
+                "summary" : "Torna admin um usuário",
+                "description": "Torna um usuário especifico em admin",
+                "tags": ["Users"],
+                    "parameters":[
+                        {
+                        "name": "user_id",
+                        "type": "string",
+                        "format": "uuid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação realizada com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuário não encontrado"
+                    }
+                }
+
+            }
+            
+        }
+
+    },
+    "components": {
+        "schemas":{
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "admin": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type ": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
